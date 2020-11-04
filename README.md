@@ -7,7 +7,9 @@ Point to note -
 - Hooks is for functional components only.
 - `useEffect` doesn't allow async directly inside this function.
 - `useEffect` only allow us to return a function.
-- `useRef`
+- `useRef` used for creating a reference of current DOM element.
+- implementation of navigation without react-router
+- When we provide one JSX inside another JSX, inner element provided to outer element is called children.
 
 ---
 
@@ -141,3 +143,43 @@ A Simple component which takes `language` and `text` state and passing it to `Co
 ### `Convert.js` -
 This component is responsible for converting language and API call of google translate.
 
+### `App.js` -
+This component uses `Header` and `Route` and starting point of website.
+
+### `Route.js` -
+setting default value as `window.location.pathname`. Just for knowing that path got changed.
+```javascript
+const [currentPath, setCurrentPath] = useState(window.location.pathname);
+```
+Listing for `popstate` event which will be fired from `Link.js`.
+```
+window.addEventListener("popstate", onLocationChange);
+```
+
+### `Link.js` -
+Its a customized anchor tag which gives you freedom to implement extra feature in `anchor` tag.
+`onClick` event of anchor tag.
+```javascript
+const onClick = (event) => {
+	...	
+	};
+```
+preventing from full page reload
+```javascript
+event.preventDefault();
+```
+it will change the url.
+```javascript
+window.history.pushState({}, "", href);
+```
+this will communication with route components that url just got changed.
+```javascript
+const navEvent = new PopStateEvent("popstate");
+window.dispatchEvent(navEvent);
+```
+This will take care whether user is holding ctrl or meta key, if yes then open in new tab.
+```javascript
+if (event.metaKey || event.ctrlKey) {
+	return;
+}
+```
